@@ -65,7 +65,7 @@ my $usage = qq{
      across slices, for example to visualize DWI measurements at different b-values (default = $stretchContrast).
 
    --percent-intensity-mode 
-     Sets c3d's percent intensity mode. Use "q" for quantile, "fq" for foreground quantile (excluding voxels with 0 intensity) or "r" 
+     Sets c3d percent intensity mode. Use "q" for quantile, "fq" for foreground quantile (excluding voxels with 0 intensity) or "r" 
      to use percentages of the intensity range without regard to quantiles (default = fq).
 
 
@@ -244,6 +244,10 @@ else {
     foreach my $input3D (@inputImages) {
 
 	system("c3d -pim $pim $input3D $maskCmd -slice $sliceLetter $slicePosition $contrastCmd -o ${tmpDir}/sliceContrastFix_" . sprintf("%03d", ${sliceCounter}) . ".nii.gz");
+	
+        if ($? != 0) {
+            die("c3d error for input $input3D");
+        }  
 
 	print SLICEINFO "${sliceCounter},$input3D\n";
 	
